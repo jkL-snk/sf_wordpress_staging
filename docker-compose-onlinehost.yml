@@ -40,7 +40,7 @@ services:
       - LETSENCRYPT_EMAIL=${WORDPRESS_ADMIN_EMAIL}
       - REDIRECT=${WORDPRESS_WEBSITE_URL}
       # CHANGE THE REDIRECT URL
-      - REDIRECT=https://www.change-me-with-your-domain.com
+      - REDIRECT=https://yc-ws.bakaneko.ru
       - WORKER_CONNECTIONS=1024
     networks:
       - ${COMPOSE_PROJECT_NAME}_default
@@ -112,7 +112,6 @@ networks:
     wordpress_default:
         name: ${COMPOSE_PROJECT_NAME}_default
     nginx-proxy:
-        external:
-            name: nginx-proxy
+        name: nginx-proxy
 
 
