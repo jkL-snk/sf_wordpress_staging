@@ -77,7 +77,6 @@ services:
     volumes:
       - mnt_data:/mnt/webdrive
       - wp_data:/var/www/html
-      - .:/script
     #to be able to copy backups to webdrive
 
 volumes:
