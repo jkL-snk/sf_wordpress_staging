@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "base"
+  config.vm.box = "ubuntu/focal64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -54,7 +54,7 @@ Vagrant.configure("2") do |config|
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
+  vb.memory = "2048"
   # end
   #
   # View the documentation for the provider you are using for more
@@ -67,4 +67,29 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+  config.vm.provision "shell", inline: <<-SCRIPT
+    if ! type docker >/dev/null; then
+        echo -e "\n\n========= installing docker..."
+        curl -sL https://get.docker.io/ | sh
+        adduser vagrant docker
+    fi
+    if ! type pip >/dev/null; then
+        echo -e "\n\n========= installing pip..."
+        curl -sk https://bootstrap.pypa.io/get-pip.py | python  
+    fi
+    if ! type docker-compose >/dev/null; then
+        echo -e "\n\n========= installing docker-compose..."
+        pip install -U docker-compose
+        echo -e "\n\n========= installing docker-compose command completion..."
+        curl -sL https://raw.githubusercontent.com/docker/compose/$(docker-compose --version | awk 'NR==1{print $NF}')/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose
+    fi
+    apt-get update
+    apt install -y git make
+SCRIPT
+
+config.vm.provision "shell", inline: <<-SCRIPT
+    git clone https://github.com/jkL-snk/sf_wordpress_staging.git
+    cd sf_wordpress_staging
+    docker-compose up -d 
+SCRIPT
 end
