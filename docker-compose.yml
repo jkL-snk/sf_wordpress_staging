@@ -66,7 +66,7 @@ services:
       - WEBDRIVE_PASSWORD
       - WEBDRIVE_URL
       - DAVFS2_ASK_AUTH
-    build: ./davfs2/
+    build: ./davfs2-build/
     devices: 
       - "/dev/fuse:/dev/fuse"
     cap_add: 
